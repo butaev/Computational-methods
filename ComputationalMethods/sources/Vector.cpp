@@ -30,7 +30,7 @@ double& Vector::operator[](const int i)
 	return vector[i];
 }
  
-int Vector::Length() const
+size_t Vector::Length() const
 {
 	return length;
 }

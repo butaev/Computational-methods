@@ -220,7 +220,9 @@ double Matrix::MinValue(double eps)
 	Matrix E(A.Size());
 	E.Identity();
 	Matrix B = A.MaxValue(eps) * E - A;
-	//std::cout<<B<<std::endl;
+    //std::cout<< "bMaxValue = " << B.MaxValue(eps) <<std::endl;
+    //std::cout << "aMaxValue = " <<A.MaxValue(eps) << std::endl;
+
 	return abs(B.MaxValue(eps) - A.MaxValue(eps));
 }
 
@@ -261,10 +263,6 @@ Vector Matrix::Segment() const
 		if(i < A.Size() - 1)
 			f[i + 1] = -A[i][i +1];
 	}
-	//std::cout<<"f\n"<<f<<std::endl;
-	//system("pause");
-	//std::cout<<"c\n"<<c<<std::endl;
-	//system("pause");
 	double min1, min2, max1, max2;
 	min1 = (c[0] - abs(f[1]) < c[size -1] - abs(f[size - 1]) ? c[0] - abs(f[1]) : c[size -1] - abs(f[size - 1]));
 	max1 = (c[0] + abs(f[1]) > c[size -1] + abs(f[size - 1]) ? c[0] + abs(f[1]) : c[size -1] + abs(f[size - 1]));

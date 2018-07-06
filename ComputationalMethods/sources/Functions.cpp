@@ -18,7 +18,7 @@ int Functions::GetLeftValue(double& l, const Matrix& A)
 	return k;
 }
 
-Vector Functions::Serch(double& a, double& b, double eps, const Matrix& A)
+Vector Functions::Search(double& a, double& b, double eps, const Matrix& A)
 {
 	Vector left, right;
 	double l = (a + b) / 2.0;
@@ -33,13 +33,13 @@ Vector Functions::Serch(double& a, double& b, double eps, const Matrix& A)
 	
 	// la <=> left <=> lc <=> right <=> lb
 	if(lc - la == 0)
-		right = Serch(l , b , eps, A);
+		right = Search(l , b , eps, A);
 	else if(lb - lc == 0)
-		left = Serch(a, l, eps, A);
+		left = Search(a, l, eps, A);
 	else
 	{
-		left = Serch(a, l, eps, A);
-		right = Serch(l , b , eps, A);
+		left = Search(a, l, eps, A);
+		right = Search(l , b , eps, A);
 	}
 	
 	for(int i = 0; i < left.Length(); ++i)
@@ -346,5 +346,5 @@ Vector Functions::BisectionMethod(Matrix A, double eps)
 	//std::cout<<"a\n"<<a<<std::endl;
 	b = A.Segment()[1];
 
-	return Functions::Serch(a, b, eps, A);
+	return Functions::Search(a, b, eps, A);
 }
