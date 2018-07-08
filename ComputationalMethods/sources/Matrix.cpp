@@ -36,14 +36,14 @@ Matrix::Matrix(const Matrix &m)
 Vector Matrix::operator[](const int i) const
 {
 	if (i < 0 || i >= size)
-		std::cout<<"ERROR"<<std::endl;
+		std::cout<<"Matrix index out of range"<<std::endl;
 	return matrix[i];
 }
 
 Vector& Matrix::operator[](const int i)
 {
 	if (i < 0 || i >= size)
-		std::cout<<"ERROR"<<std::endl;
+		std::cout<<"Matrix index out of range"<<std::endl;
 	return matrix[i];
 }
 
@@ -251,10 +251,10 @@ double Matrix::Norm1()
 	return n;
 }
 
-Vector Matrix::Segment() const
+Vector Matrix::ValuesBounds() const
 {
 	Matrix A = *this;
-	Vector c(size), f(size), v(2);
+	Vector c(size), f(size + 1), v(2);
 	c[0] = A[0][0];
 
 	for(int i = 0; i < A.Size(); ++i)

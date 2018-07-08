@@ -18,15 +18,19 @@ Vector::Vector(const int l)
  
 double Vector::operator[](const int i) const
 {
-	if (i < 0 || i >= length)
-		std::cout<<"ERROR"<<std::endl;
+    if (i < 0 || i >= length)
+    {
+        std::cout << "Vector index out of range" << std::endl;
+    }
 	return vector[i];
 }
 
 double& Vector::operator[](const int i)
 {
-	if (i < 0 || i >= length)
-		std::cout<<"ERROR"<<std::endl;
+    if (i < 0 || i >= length)
+    {
+        std::cout << "Vector index out of range" << std::endl;
+    }
 	return vector[i];
 }
  

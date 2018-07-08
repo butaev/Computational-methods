@@ -20,7 +20,7 @@ public:
     double Norm();
     double Norm1();
     double ConditionNumber();
-    Vector Segment() const;
+    Vector ValuesBounds() const;
 
     Vector operator[](const int i) const;
     Vector& operator[](const int i);

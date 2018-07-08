@@ -342,9 +342,9 @@ Vector Functions::BisectionMethod(Matrix A, double eps)
 	std::cout<<"A\n"<<A<<"\n";
 	double a, b;
 
-	a = A.Segment()[0];
+	a = A.ValuesBounds()[0];
 	//std::cout<<"a\n"<<a<<std::endl;
-	b = A.Segment()[1];
+	b = A.ValuesBounds()[1];
 
 	return Functions::Search(a, b, eps, A);
 }
