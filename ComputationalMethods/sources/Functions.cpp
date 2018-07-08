@@ -5,7 +5,32 @@
 #include <iostream>
 #include <cmath>
 
-int Functions::GetLeftValue(double& l, const Matrix& A)
+void Functions::QRDecomposition(const Matrix& A, Matrix& q, Matrix& r)
+{
+    Matrix B(A.Size());
+    Matrix Q(A.Size());
+    Matrix R(A.Size());
+    Matrix a = A;
+    Q.Identity();
+    R.Identity();
+    for (int i = 0; i < A.Size(); ++i)
+    {
+        for (int j = i + 1; j < A.Size(); ++j)
+        {
+            B.Identity();
+            B[i][i] = a[i][i] / sqrt(a[i][i] * a[i][i] + a[j][i] * a[j][i]);//  cos
+            B[i][j] = a[j][i] / sqrt(a[i][i] * a[i][i] + a[j][i] * a[j][i]);// sin
+            B[j][i] = -B[i][j];
+            B[j][j] = B[i][i];
+            a = B * a;
+        }
+    }
+    r = a;
+    q = (a * A.Inverse()).Inverse();
+    //std::cout<<r<<std::endl;
+}
+
+int Functions::NumLeftValues(double l, const Matrix& A)
 {
 	Vector d(A.Size());
 	d[0] = A[0][0] - l;
@@ -18,11 +43,11 @@ int Functions::GetLeftValue(double& l, const Matrix& A)
 	return k;
 }
 
-Vector Functions::Search(double& a, double& b, double eps, const Matrix& A)
+Vector Functions::SearchValues(double& a, double& b, double eps, const Matrix& A)
 {
 	Vector left, right;
 	double l = (a + b) / 2.0;
-	int la = GetLeftValue(a, A), lb = GetLeftValue(b, A), lc = GetLeftValue(l, A);
+	int la = NumLeftValues(a, A), lb = NumLeftValues(b, A), lc = NumLeftValues(l, A);
 	Vector v(lb - la);
 	
 	if((b - a) < eps && (lb - la) == 1)
@@ -31,15 +56,14 @@ Vector Functions::Search(double& a, double& b, double eps, const Matrix& A)
 		return v;
 	}
 	
-	// la <=> left <=> lc <=> right <=> lb
 	if(lc - la == 0)
-		right = Search(l , b , eps, A);
+		right = SearchValues(l , b , eps, A);
 	else if(lb - lc == 0)
-		left = Search(a, l, eps, A);
+		left = SearchValues(a, l, eps, A);
 	else
 	{
-		left = Search(a, l, eps, A);
-		right = Search(l , b , eps, A);
+		left = SearchValues(a, l, eps, A);
+		right = SearchValues(l , b , eps, A);
 	}
 	
 	for(int i = 0; i < left.Length(); ++i)
@@ -201,14 +225,14 @@ Vector Functions::RotationMethod(Matrix A, Vector b)
 	return x;
 }
 
-Vector Functions::SweepMethod(Matrix A, Vector f)
+Vector Functions::TridiagMatrix(Matrix A, Vector f)
 {
 	int N = A.Size();
-	Vector a(N - 1);
-	Vector b(N - 1);
+	Vector a(N);
+	Vector b(N);
 	Vector c(N);
-	Vector d(N - 1); // альфа
-	Vector e(N - 1); // бэта
+	Vector alpha(N);
+	Vector beta(N);
 	Vector x(N);
 	for(int i = 0; i < N; ++i)
 	{
@@ -222,26 +246,24 @@ Vector Functions::SweepMethod(Matrix A, Vector f)
 			//std::cout<<a[i]<<'\n';
 		}
 	}
-	d[0] = b[0] / c[0];
-	e[0] = f[0] / c[0];
-	for(int i = 1; i < N - 1; ++i)
+    alpha[0] = b[0] / c[0];
+    beta[0] = f[0] / c[0];
+	for(int i = 1; i < N; ++i)
 	{
-		d[i] = b[i - 1] / (c[i - 1] - d[i - 1] * a[i - 1]);
-		//std::cout<<d[i]<<'\n';
-		e[i] = (f[i] + e[i - 1] * a[i - 1]) / (c[i - 1] - d[i - 1] * a[i - 1]);
-		//std::cout<<e[i]<<'\n';
+        alpha[i] = b[i] / (c[i] - alpha[i - 1] * a[i]);
+        beta[i] = (f[i] + beta[i - 1] * a[i]) / (c[i] - alpha[i - 1] * a[i]);
 	}
 
-	x[N - 1] = (f[N - 1] + e[N - 2] * a[N - 2]) / (c[N - 2] - d[N - 2] * a[N - 2]);
+    x[N - 1] = beta[N - 1];
 
 	for(int i = N - 2; i >= 0; --i)
 	{
-		x[i] = d[i] * x[i + 1] + e[i];
+		x[i] = alpha[i] * x[i + 1] + beta[i];
 	}
 	return x;
 }
 
-Vector Functions::GetValues(Matrix a, double eps)
+Vector Functions::QRAlgorithm(Matrix a, double eps)
 {
 	int n = a.Size();
 	Matrix q, r, A = a;
@@ -268,7 +290,7 @@ Vector Functions::GetValues(Matrix a, double eps)
 	}
 }
 
-Vector Functions::MinResidual(Matrix A, Vector b, double eps, int& k)
+Vector Functions::GMRES(Matrix A, Vector b, double eps, int& numIter)
 {
 	int N = A.Size();
 	Vector x(N);
@@ -277,10 +299,10 @@ Vector Functions::MinResidual(Matrix A, Vector b, double eps, int& k)
 		x[i] = 1;
 
 	Vector r = A * x - b;
-	k = 0;
+    numIter = 0;
 	while (r.Norm() > eps)
 	{
-		++k;
+		++numIter;
 		Vector q = A * r;
 		x = x  - ((q * r) / (q * q)) * r;
 		r = A * x - b;
@@ -288,7 +310,7 @@ Vector Functions::MinResidual(Matrix A, Vector b, double eps, int& k)
 	return x;
 }
 
-Vector Functions::SimpleIteration(Matrix A, Vector b, double eps, int& k)
+Vector Functions::SimpleIteration(Matrix A, Vector b, double eps, int& numIter)
  {
 	int N = A.Size();
 	Vector x(N);
@@ -299,10 +321,10 @@ Vector Functions::SimpleIteration(Matrix A, Vector b, double eps, int& k)
 	double t = 2 / (A.MinValue(eps) + A. MaxValue(eps));
 
 	Vector r = A * x - b;
-	k = 0;
+    numIter = 0;
 	while (r.Norm() > eps)
 	{
-		++k;
+		++numIter;
 		
 		x = x  - t * r;
 		r = A * x - b;
@@ -311,7 +333,8 @@ Vector Functions::SimpleIteration(Matrix A, Vector b, double eps, int& k)
 
 Vector Functions::BisectionMethod(Matrix A, double eps)
 {
-	Matrix E(A.Size()), X(A.Size()), H(A.Size());	 
+	/*
+    Matrix E(A.Size()), X(A.Size()), H(A.Size());
 	Vector v(A.Size()), e(A.Size()), x(A.Size());
 	double t;
 	 
@@ -339,12 +362,13 @@ Vector Functions::BisectionMethod(Matrix A, double eps)
 		H = E - (2 / (v * v)) * X;
 		A = H * A * H;
 	}
-	std::cout<<"A\n"<<A<<"\n";
-	double a, b;
+    */
+	//std::cout<<"A\n"<<A<<"\n";
 
-	a = A.ValuesBounds()[0];
-	//std::cout<<"a\n"<<a<<std::endl;
-	b = A.ValuesBounds()[1];
+    Vector bounds(2);
+	bounds = A.ValuesBounds();
+	//std::cout<<"bounds[0] = "<< bounds[0] <<std::endl;
+    //std::cout << "bounds[1] = " << bounds[1] << std::endl;
 
-	return Functions::Search(a, b, eps, A);
+	return Functions::SearchValues(bounds[0], bounds[1], eps, A);
 }

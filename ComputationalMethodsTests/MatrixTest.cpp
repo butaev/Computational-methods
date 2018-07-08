@@ -42,12 +42,6 @@ TEST_F(MatrixTest, DotProduct) {
     EXPECT_LE(std::abs(dotProduct[0][1] - 2), 1e-6);
     EXPECT_LE(std::abs(dotProduct[1][0] + 3), 1e-6);
     EXPECT_LE(std::abs(dotProduct[1][1] + 4), 1e-6);
-
-    dotProduct = b * a;
-    EXPECT_LE(std::abs(dotProduct[0][0] - 1), 1e-6);
-    EXPECT_LE(std::abs(dotProduct[0][1] + 2), 1e-6);
-    EXPECT_LE(std::abs(dotProduct[1][0] - 3), 1e-6);
-    EXPECT_LE(std::abs(dotProduct[1][1] + 4), 1e-6);
 }
 
 TEST_F(MatrixTest, MatrixVectorProduct)
@@ -144,26 +138,14 @@ TEST_F(MatrixTest, ConditionNumber)
 
 TEST_F(MatrixTest, ValuesBounds)
 {
+    Matrix M(2);
+    M[0][0] = 2, M[0][1] = -1, M[1][0] = -1, M[1][1] = 2;
+    //std::cout << "M = " << M << std::endl;
     Vector valuesBounds(2);
-    valuesBounds = a.ValuesBounds();
-    EXPECT_LE(std::abs(valuesBounds[0] + 1), 1e-6);
-    EXPECT_LE(std::abs(valuesBounds[1] - 1), 1e-6);
-}
+    valuesBounds = M.ValuesBounds();
 
-TEST_F(MatrixTest, QRDecomposition)
-{
-    Matrix m(2);
-    m[0][0] = 1, m[0][1] = 2, m[1][0] = 0, m[1][1] = 2;
-    Matrix q, r;
-    QRDecomposition(m, q, r);
+    //std::cout << "valuesBounds = " << valuesBounds << std::endl;
 
-    EXPECT_LE(std::abs(q[0][0] - 1), 1e-6);
-    EXPECT_LE(std::abs(q[0][1] - 0), 1e-6);
-    EXPECT_LE(std::abs(q[1][0] - 0), 1e-6);
-    EXPECT_LE(std::abs(q[1][1] - 1), 1e-6);
-
-    EXPECT_LE(std::abs(r[0][0] - 1), 1e-6);
-    EXPECT_LE(std::abs(r[0][1] - 2), 1e-6);
-    EXPECT_LE(std::abs(r[1][0] - 0), 1e-6);
-    EXPECT_LE(std::abs(r[1][1] - 2), 1e-6);
+    EXPECT_LE(std::abs(valuesBounds[0] - 1), 1e-6);
+    EXPECT_LE(std::abs(valuesBounds[1] - 3), 1e-6);
 }

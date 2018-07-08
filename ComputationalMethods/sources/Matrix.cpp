@@ -132,30 +132,6 @@ Matrix operator-(const Matrix& a, const Matrix& b)
 	return c;
 }
 
-void QRDecomposition(const Matrix& A, Matrix& q, Matrix& r)
-{
-	Matrix B(A.Size());
-	Matrix Q(A.Size());
-	Matrix R(A.Size());
-	Matrix a = A;
-	Q.Identity();
-	R.Identity();
-	for(int i = 0; i < A.Size(); ++i)
-	{
-		for(int j = i + 1; j < A.Size(); ++j)
-		{
-			B.Identity();
-			B[i][i] = a[i][i] / sqrt(a[i][i] * a[i][i] + a[j][i] * a[j][i]);//  cos
-			B[i][j] = a[j][i] / sqrt(a[i][i] * a[i][i] + a[j][i] * a[j][i]);// sin
-			B[j][i] = - B[i][j];
-			B[j][j] = B[i][i];
-			a = B * a;
-		}
-	}
-	r = a;
-	q = (a * A.Inverse()).Inverse();
-	//std::cout<<r<<std::endl;
-}
 
 void Matrix::SwapLine(int i, int j)
 {
@@ -264,14 +240,18 @@ Vector Matrix::ValuesBounds() const
 			f[i + 1] = -A[i][i +1];
 	}
 	double min1, min2, max1, max2;
-	min1 = (c[0] - abs(f[1]) < c[size -1] - abs(f[size - 1]) ? c[0] - abs(f[1]) : c[size -1] - abs(f[size - 1]));
-	max1 = (c[0] + abs(f[1]) > c[size -1] + abs(f[size - 1]) ? c[0] + abs(f[1]) : c[size -1] + abs(f[size - 1]));
+	min1 = (c[0] - abs(f[1]) < c[size -1] - abs(f[size - 1])
+        ? c[0] - abs(f[1]) : c[size -1] - abs(f[size - 1]));
+	max1 = (c[0] + abs(f[1]) > c[size -1] + abs(f[size - 1])
+        ? c[0] + abs(f[1]) : c[size -1] + abs(f[size - 1]));
 	min2 = c[1] - abs(f[1]) - abs(f[2]);
 	max2 = c[1] + abs(f[1]) + abs(f[2]);
 	for(int i = 2; i < size - 1; ++i)
 	{
-		min2 = (c[i] - abs(f[i]) - abs(f[i + 1]) < min2 ? c[i] - abs(f[i]) - abs(f[i + 1]) : min2);
-		max2 = (c[i] + abs(f[i]) + abs(f[i + 1]) > max2 ? c[i] + abs(f[i]) + abs(f[i + 1]) : max2);
+		min2 = (c[i] - abs(f[i]) - abs(f[i + 1]) < min2
+            ? c[i] - abs(f[i]) - abs(f[i + 1]) : min2);
+		max2 = (c[i] + abs(f[i]) + abs(f[i + 1]) > max2
+            ? c[i] + abs(f[i]) + abs(f[i + 1]) : max2);
 	}
 	v[0] = (min1 < min2 ? min1 : min2);
 	v[1] = (max1 > max2 ? max1 : max2);

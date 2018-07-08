@@ -24,17 +24,15 @@ public:
 
     Vector operator[](const int i) const;
     Vector& operator[](const int i);
-    
+    Matrix& operator=(const Matrix& m);
+
     friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
     friend std::istream& operator>>(std::istream& is, Matrix& m);
-	Matrix& operator=(const Matrix& m);
 	friend Matrix operator*(const Matrix& a, const Matrix& b);
 	friend Vector operator*(const Matrix& a, const Vector& b);
 	friend Matrix operator*(const double x, Matrix& a);
 	friend Matrix operator+(const Matrix& a, const Matrix& b);
 	friend Matrix operator-(const Matrix& a, const Matrix& b);
-	
-    friend void QRDecomposition(const Matrix& a, Matrix& q, Matrix& r);
 
 private:
     Vector * matrix;

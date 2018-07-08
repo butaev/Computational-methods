@@ -7,17 +7,21 @@
 class Functions
 {
 public:
-    static Vector Gauss(Matrix A, Vector b, double& detA);
-    static Vector GaussS(Matrix A, Vector b, double& detA);
-    static Vector RotationMethod(Matrix A, Vector b);
-    static Vector SweepMethod(Matrix A, Vector f);
-    static Vector GetValues(Matrix A, double eps);
-    static Vector MinResidual(Matrix A, Vector b, double eps, int& k);
-    static Vector SimpleIteration(Matrix A, Vector b, double eps, int& k);
+    static void QRDecomposition(const Matrix& a, Matrix& q, Matrix& r);
+
+    // methods for finding eigenvalues of symmetric matrix
+    static Vector QRAlgorithm(Matrix A, double eps);
     static Vector BisectionMethod(Matrix A, double eps);
 
-private:
-    static int GetLeftValue(double& a, const Matrix& A);
-    static Vector Search(double& a, double& b, double eps, const Matrix& A);
-};
+    // methods for solution system of linear equations
+    static Vector RotationMethod(Matrix A, Vector b);
+    static Vector GMRES(Matrix A, Vector b, double eps, int& numIter);// generalized minimal residual method
+    static Vector SimpleIteration(Matrix A, Vector b, double eps, int& numIter);
+    
+    static Vector TridiagMatrix(Matrix A, Vector f);
+    static Vector Gauss(Matrix A, Vector b, double& detA);
+    static Vector GaussS(Matrix A, Vector b, double& detA);
 
+    static int NumLeftValues(double a, const Matrix& A);// number of eigenvalues A less than a
+    static Vector SearchValues(double& a, double& b, double eps, const Matrix& A);//finding eigenvalues between a and b
+};
