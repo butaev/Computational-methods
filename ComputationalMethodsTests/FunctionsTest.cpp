@@ -41,6 +41,7 @@ TEST_F(FunctionTest, NumLeftValues) {
 TEST_F(FunctionTest, QRAlgorithm) {
     Vector eigenvalues(A.Size());
     eigenvalues = Functions::QRAlgorithm(A, 1e-6);
+
     EXPECT_LE(std::abs(eigenvalues[0] - 1), 1e-6);
     EXPECT_LE(std::abs(eigenvalues[1] - 2), 1e-6);
 }
@@ -113,7 +114,6 @@ TEST_F(FunctionTest, SearchValues)
     double a = 0.5;
     double b = 1.5;
     Vector values = Functions::SearchValues(a, b, 1e-6, A);
-    EXPECT_LE(std::abs((int)values.Length() - 1), 1e-6);
-    EXPECT_LE(std::abs(values[values.Length() - 1] - 1), 1e-6);
-
+    EXPECT_LE(std::abs((int)values.Size() - 1), 1e-6);
+    EXPECT_LE(std::abs(values[values.Size() - 1] - 1), 1e-6);
 }

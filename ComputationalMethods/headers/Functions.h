@@ -1,15 +1,15 @@
+#pragma once
+
 #include "Vector.h"
 #include "Matrix.h"
 #include <fstream>
 
-#pragma once
-
 class Functions
 {
 public:
-    static void QRDecomposition(const Matrix& a, Matrix& q, Matrix& r);
+    static void QRDecomposition(Matrix a, Matrix& q, Matrix& r);
 
-    // methods for finding eigenvalues of symmetric matrix
+    // methods for finding eigenvalues of matrix
     static Vector QRAlgorithm(Matrix A, double eps);
     static Vector BisectionMethod(Matrix A, double eps);
 

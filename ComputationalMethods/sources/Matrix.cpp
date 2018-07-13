@@ -3,48 +3,32 @@
 #include <iostream>
 #include <cmath>
 
-Matrix::Matrix()
-{
-	matrix = NULL;
-	size = 0;
-}
-
 int Matrix::Size() const
 {
 	return size;
 }
 
-Matrix::Matrix(int s)
+Matrix::Matrix() : size(0), matrix(std::vector<Vector>(0)) {}
+
+Matrix::Matrix(size_t s)
 {
 	size = s;
-	matrix = new Vector[s];
+	matrix = std::vector<Vector>(s);
 	for(int i = 0; i < s; ++i)
 		matrix[i] = Vector(s);
 }
 
-Matrix::Matrix(const Matrix &m)
+Matrix::Matrix(const Matrix &m) : Matrix(m.size)
 {
-	size = m.size;
-	matrix = new Vector[size];
-	for(int i = 0; i < size; ++i)
-		matrix[i] = Vector(size);
 	for (int i = 0; i < size; ++i)
 		for (int j = 0; j < size; ++j)
 			matrix[i][j] = m[i][j];
 }
 
-Vector Matrix::operator[](const int i) const
+Matrix::Matrix(Matrix && m)
 {
-	if (i < 0 || i >= size)
-		std::cout<<"Matrix index out of range"<<std::endl;
-	return matrix[i];
-}
-
-Vector& Matrix::operator[](const int i)
-{
-	if (i < 0 || i >= size)
-		std::cout<<"Matrix index out of range"<<std::endl;
-	return matrix[i];
+    std::swap(size, m.size);
+    std::swap(matrix, m.matrix);
 }
 
 std::ostream& operator<<(std::ostream& os, const Matrix& m)
@@ -72,23 +56,43 @@ std::istream& operator>>(std::istream& is, Matrix& m)
 	return is;
 }
 
+Vector Matrix::operator[](const int i) const
+{
+    if (i < 0 || i >= size)
+    {
+        std::cout << "index = " << i << std::endl;
+        std::cout << "this = " << this << std::endl;
+        std::cout << "Matrix index out of range" << std::endl;
+    }
+    return matrix[i];
+}
+
+Vector& Matrix::operator[](const int i)
+{
+    if (i < 0 || i >= size)
+    {
+        std::cout << "index = " << i << std::endl;
+        std::cout << "this = " << this << std::endl;
+        std::cout << "Matrix index out of range" << std::endl;
+    }
+    return matrix[i];
+}
+
 Matrix& Matrix::operator=(const Matrix& m)
 {
-	if (this != &m)
-	{
-		delete[] matrix;
-
-		size = m.Size();
-
-		matrix = new Vector[size];
-		for (int i = 0; i < size; ++i)
-			matrix[i] = m[i];
-	}
-	
+    size = m.size;
+    matrix = m.matrix;
 	return *this;
 }
 
-Matrix operator*(const Matrix&a, const Matrix& b)
+Matrix& Matrix::operator=(Matrix && m)
+{
+    std::swap(size, m.size);
+    std::swap(matrix, m.matrix);
+    return *this;
+}
+
+Matrix operator*(const Matrix& a, const Matrix& b)
 {
 	Matrix m(a.Size());
 	for (int i = 0; i < b.Size(); ++i)
@@ -165,7 +169,7 @@ Matrix Matrix::Inverse() const
 		if(i > 0)
 			x[i - 1] = 0;
 		for(int j = 0; j  < size; ++j)
-			B[j][i] = Functions::GaussS(*this, x,  detA)[j];		
+			B[j][i] = Functions::GaussS(*this, x,  detA)[j];
 	}
 	return B;
 }
@@ -261,9 +265,4 @@ Vector Matrix::ValuesBounds() const
 double Matrix::ConditionNumber()
 {
 	return Matrix::Norm() * Matrix::Inverse().Matrix::Norm();
-}
-
-Matrix::~Matrix()
-{
-	delete[] matrix;
 }

@@ -5,14 +5,14 @@
 #include <iostream>
 #include <cmath>
 
-void Functions::QRDecomposition(const Matrix& A, Matrix& q, Matrix& r)
+void Functions::QRDecomposition(Matrix A, Matrix& q, Matrix& r)
 {
     Matrix B(A.Size());
     Matrix Q(A.Size());
-    Matrix R(A.Size());
     Matrix a = A;
+
     Q.Identity();
-    R.Identity();
+
     for (int i = 0; i < A.Size(); ++i)
     {
         for (int j = i + 1; j < A.Size(); ++j)
@@ -26,6 +26,7 @@ void Functions::QRDecomposition(const Matrix& A, Matrix& q, Matrix& r)
         }
     }
     r = a;
+
     q = (a * A.Inverse()).Inverse();
     //std::cout<<r<<std::endl;
 }
@@ -66,10 +67,10 @@ Vector Functions::SearchValues(double& a, double& b, double eps, const Matrix& A
 		right = SearchValues(l , b , eps, A);
 	}
 	
-	for(int i = 0; i < left.Length(); ++i)
+	for(int i = 0; i < left.Size(); ++i)
 		v[i] = left[i];
-	for(int i = 0; i < right.Length(); ++i)
-		v[i + left.Length()] = right[i];
+	for(int i = 0; i < right.Size(); ++i)
+		v[i + left.Size()] = right[i];
 
 	//std::cout<<v;
 
@@ -266,7 +267,8 @@ Vector Functions::TridiagMatrix(Matrix A, Vector f)
 Vector Functions::QRAlgorithm(Matrix a, double eps)
 {
 	int n = a.Size();
-	Matrix q, r, A = a;
+    Matrix q, r; 
+    Matrix A = a;
 	Vector v(n);
 	while (true)
 	{
