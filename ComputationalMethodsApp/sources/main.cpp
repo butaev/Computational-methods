@@ -6,15 +6,13 @@
 #include <fstream>
 #include <cmath>
 
-using namespace std;
-
 int main ()
 {
-	ifstream F;
+    std::ifstream F;
 	F.open("../Data/input.txt");
 	if (!F.is_open())
 	{
-		cout << "File is not exist" << endl;
+        std::cout << "File is not exist" << std::endl;
 		return -1;
 	}
 
@@ -36,7 +34,7 @@ int main ()
 	//cout<<A.Segment()<<endl;
 	//cout<<A.MaxValue(eps)<<endl;
 	//cout<<Functions::GetValues(A,eps);
-	cout<<Functions::BisectionMethod(A, eps);
+    std::cout<<Functions::BisectionMethod(A, eps);
 
 
 	/*cout<<sqrt((A * A).MaxValue(eps));

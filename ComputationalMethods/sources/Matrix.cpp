@@ -60,8 +60,6 @@ Vector Matrix::operator[](const int i) const
 {
     if (i < 0 || i >= size)
     {
-        std::cout << "index = " << i << std::endl;
-        std::cout << "this = " << this << std::endl;
         std::cout << "Matrix index out of range" << std::endl;
     }
     return matrix[i];
@@ -71,8 +69,6 @@ Vector& Matrix::operator[](const int i)
 {
     if (i < 0 || i >= size)
     {
-        std::cout << "index = " << i << std::endl;
-        std::cout << "this = " << this << std::endl;
         std::cout << "Matrix index out of range" << std::endl;
     }
     return matrix[i];
@@ -139,13 +135,7 @@ Matrix operator-(const Matrix& a, const Matrix& b)
 
 void Matrix::SwapLine(int i, int j)
 {
-	Vector v(size);
-	for(int k = 0; k < size; k++)
-		v[k] = matrix[i][k];
-	for(int k = 0; k < size; k++)
-		matrix[i][k] = matrix[j][k];
-	for(int k = 0; k < size; k++)
-		matrix[j][k] = v[k];
+    std::swap(matrix[i], matrix[j]);
 }
 
 void Matrix::Identity()
@@ -217,7 +207,8 @@ double Matrix::Norm()
 
 double Matrix::Norm1()
 {
-	double n = 0.0, m;
+    double n = 0.0;
+    double m;
 	for(int i = 0; i < size; ++i)
 	{
 		m = n;
