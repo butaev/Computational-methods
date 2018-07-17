@@ -6,13 +6,13 @@ README
 
 ***Method of decomposition matrix:***
 
-QRDecomposition(A, Q, R) is decomposition of a matrix A into a product A = QR of an orthogonal matrix Q and an upper triangular matrix R.
+QRDecomposition is decomposition of a matrix A into a product A = QR of an orthogonal matrix Q and an upper triangular matrix R.
 
 ***Methods for finding eigenvalues of matrix to within epsilon:***
 
-QRAlgorithm(A, eps) use qr decomposition.
+QRAlgorithm use qr decomposition for solve problem.
 
-BisectionMethod(A, eps) algorithm which uses the bisection method to find eigenvalues of matrix A. In this algorithm is used two main functions:
+BisectionMethod algorithm which uses the bisection method to find eigenvalues of matrix A. In this algorithm is used two main functions:
 	NumLeftValues(a, A) return number of eigenvalues A less than a,
 	SearchValues(a, b, eps,  A) Return eigenvalues A between a and b.
 
