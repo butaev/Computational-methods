@@ -314,10 +314,10 @@ Vector Functions::GMRES(Matrix A, Vector b, double eps, int& numIter)
 
 Vector Functions::SimpleIteration(Matrix A, Vector b, double eps, int& numIter)
  {
-	int N = A.Size();
-	Vector x(N);
+	size_t size = A.Size();
+	Vector x(size);
 
-	for(int i = 0; i < N; ++i)
+	for(int i = 0; i < size; ++i)
 		x[i] = 1;
 
 	double t = 2 / (A.MinValue(eps) + A. MaxValue(eps));
@@ -331,7 +331,8 @@ Vector Functions::SimpleIteration(Matrix A, Vector b, double eps, int& numIter)
 		x = x  - t * r;
 		r = A * x - b;
 	}
-	return x;}
+	return x;
+}
 
 Vector Functions::BisectionMethod(Matrix A, double eps)
 {
