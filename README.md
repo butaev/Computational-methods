@@ -14,9 +14,9 @@ QRAlgorithm use qr decomposition for solve problem.
 
 BisectionMethod algorithm which uses the bisection method to find eigenvalues of matrix A. In this algorithm is used two main functions:
 
-	NumLeftValues(a, A) return number of eigenvalues A less than a,
+NumLeftValues(a, A) return number of eigenvalues A less than a,
 
-	SearchValues(a, b, eps,  A) Return eigenvalues A between a and b.
+SearchValues(a, b, eps,  A) Return eigenvalues A between a and b.
 
 
 ***Methods for solution system of linear equations of form Ax = b:***
@@ -34,4 +34,4 @@ GaussS - Gauss method with selection of the main element by column.
 RotationMethod with help rotation matrices leads the matrix A to the upper triangular form and solve equation.
 
 For matrices, some additional functions are implemented, such as:
-matrix norms (spectral and 1 - norm), matrix inversion, calculation of maximum and minimum eigenvalues, calculation of condition number and boundary of the eigenvalues of the matrix.
+matrix norms (spectral and 1 - norm), matrix inversion, calculation of maximum and minimum eigenvalues, calculation of condition number and boundary of the eigenvalues of the matrix. To make it more convenient to use matrices was realized Vector class.
