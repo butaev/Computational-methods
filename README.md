@@ -13,7 +13,9 @@ QRDecomposition is decomposition of a matrix A into a product A = QR of an ortho
 QRAlgorithm use qr decomposition for solve problem.
 
 BisectionMethod algorithm which uses the bisection method to find eigenvalues of matrix A. In this algorithm is used two main functions:
+
 	NumLeftValues(a, A) return number of eigenvalues A less than a,
+
 	SearchValues(a, b, eps,  A) Return eigenvalues A between a and b.
 
 
