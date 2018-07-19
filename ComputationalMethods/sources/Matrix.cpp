@@ -14,14 +14,14 @@ Matrix::Matrix(size_t s)
 {
 	size = s;
 	matrix = std::vector<Vector>(s);
-	for(int i = 0; i < s; ++i)
+	for(size_t i = 0; i < s; ++i)
 		matrix[i] = Vector(s);
 }
 
 Matrix::Matrix(const Matrix &m) : Matrix(m.size)
 {
-	for (int i = 0; i < size; ++i)
-		for (int j = 0; j < size; ++j)
+	for (size_t i = 0; i < size; ++i)
+		for (size_t j = 0; j < size; ++j)
 			matrix[i][j] = m[i][j];
 }
 
@@ -56,7 +56,7 @@ std::istream& operator>>(std::istream& is, Matrix& m)
 	return is;
 }
 
-Vector Matrix::operator[](const int i) const
+Vector Matrix::operator[](const size_t i) const
 {
     if (i < 0 || i >= size)
     {
@@ -65,7 +65,7 @@ Vector Matrix::operator[](const int i) const
     return matrix[i];
 }
 
-Vector& Matrix::operator[](const int i)
+Vector& Matrix::operator[](const size_t i)
 {
     if (i < 0 || i >= size)
     {
@@ -140,8 +140,8 @@ void Matrix::SwapLine(int i, int j)
 
 void Matrix::Identity()
 {
-	for(int i = 0; i < size; ++i)
-		for(int j = 0; j < size; ++j)
+	for(size_t i = 0; i < size; ++i)
+		for(size_t j = 0; j < size; ++j)
 			if(i == j)
 				matrix[i][j] = 1;
 			else
@@ -153,12 +153,12 @@ Matrix Matrix::Inverse() const
 	Vector x(size);
 	Matrix B(size);
 	double detA;
-	for(int i = 0; i < size; ++i)
+	for(size_t i = 0; i < size; ++i)
 	{
 		x[i] = 1;
 		if(i > 0)
 			x[i - 1] = 0;
-		for(int j = 0; j  < size; ++j)
+		for(size_t j = 0; j  < size; ++j)
 			B[j][i] = Functions::GaussS(*this, x,  detA)[j];
 	}
 	return B;
@@ -167,7 +167,7 @@ Matrix Matrix::Inverse() const
 double Matrix::MaxValue(double eps)
 {
 	Vector x(size), y(size);
-	for(int i = 0; i < size; ++i)
+	for(size_t i = 0; i < size; ++i)
 		x[i] = 1;
 	y = (1 / x.Norm()) * x;
 	//int i = 0;
@@ -199,8 +199,8 @@ double Matrix::MinValue(double eps)
 double Matrix::Norm()
 {
 	double n = 0.0;
-	for(int i = 0; i < size; ++i)
-		for(int j = 0; j < size; ++j)
+	for(size_t i = 0; i < size; ++i)
+		for(size_t j = 0; j < size; ++j)
 			n += matrix[i][j] * matrix[i][j];
 	return sqrt(n);
 }
@@ -209,11 +209,11 @@ double Matrix::Norm1()
 {
     double n = 0.0;
     double m;
-	for(int i = 0; i < size; ++i)
+	for(size_t i = 0; i < size; ++i)
 	{
 		m = n;
 		n = 0.0;
-		for(int j = 0; j < size; ++j)
+		for(size_t j = 0; j < size; ++j)
 		{
 			n += abs(matrix[i][j]);
 		}
@@ -241,7 +241,7 @@ Vector Matrix::ValuesBounds() const
         ? c[0] + abs(f[1]) : c[size -1] + abs(f[size - 1]));
 	min2 = c[1] - abs(f[1]) - abs(f[2]);
 	max2 = c[1] + abs(f[1]) + abs(f[2]);
-	for(int i = 2; i < size - 1; ++i)
+	for(size_t i = 2; i < size - 1; ++i)
 	{
 		min2 = (c[i] - abs(f[i]) - abs(f[i + 1]) < min2
             ? c[i] - abs(f[i]) - abs(f[i + 1]) : min2);

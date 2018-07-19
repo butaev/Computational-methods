@@ -67,9 +67,9 @@ Vector Functions::SearchValues(double& a, double& b, double eps, const Matrix& A
 		right = SearchValues(l , b , eps, A);
 	}
 	
-	for(int i = 0; i < left.Size(); ++i)
+	for(size_t i = 0; i < left.Size(); ++i)
 		v[i] = left[i];
-	for(int i = 0; i < right.Size(); ++i)
+	for(size_t i = 0; i < right.Size(); ++i)
 		v[i + left.Size()] = right[i];
 
 	//std::cout<<v;
@@ -317,7 +317,7 @@ Vector Functions::SimpleIteration(Matrix A, Vector b, double eps, int& numIter)
 	size_t size = A.Size();
 	Vector x(size);
 
-	for(int i = 0; i < size; ++i)
+	for(size_t i = 0; i < size; ++i)
 		x[i] = 1;
 
 	double t = 2 / (A.MinValue(eps) + A. MaxValue(eps));

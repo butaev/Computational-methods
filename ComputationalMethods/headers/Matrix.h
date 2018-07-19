@@ -23,8 +23,8 @@ public:
     double ConditionNumber();
     Vector ValuesBounds() const;
 
-    Vector operator[](const int i) const;
-    Vector& operator[](const int i);
+    Vector operator[](const size_t i) const;
+    Vector& operator[](const size_t i);
     Matrix& operator=(const Matrix& m);
     Matrix& operator=(Matrix && m);
 
