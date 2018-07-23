@@ -2,26 +2,24 @@
 
 #include "Vector.h"
 #include "Matrix.h"
-#include <fstream>
 
-class Functions
+namespace Functions
 {
-public:
-    static void QRDecomposition(Matrix a, Matrix& q, Matrix& r);
+    void QRDecomposition(Matrix m, Matrix& q, Matrix& r);
 
     // methods for finding eigenvalues of matrix
-    static Vector QRAlgorithm(Matrix A, double eps);
-    static Vector BisectionMethod(Matrix A, double eps);
+    Vector QRAlgorithm(Matrix m, double eps);
+    Vector BisectionMethod(Matrix m, double eps);
 
     // methods for solution system of linear equations
-    static Vector GMRES(Matrix A, Vector b, double eps, int& numIter);// generalized minimal residual method
-    static Vector SimpleIteration(Matrix A, Vector b, double eps, int& numIter);
+    Vector GMRES(Matrix m, Vector v, double eps, int& numIter);// generalized minimal residual method
+    Vector SimpleIteration(Matrix m, Vector v, double eps, int& numIter);
     
-    static Vector TridiagMatrix(Matrix A, Vector f);
-    static Vector Gauss(Matrix A, Vector b, double& detA);
-    static Vector GaussS(Matrix A, Vector b, double& detA);
-    static Vector RotationMethod(Matrix A, Vector b);
+    Vector TridiagMatrix(Matrix m, Vector v);
+    Vector Gauss(Matrix m, Vector v, double& detm);
+    Vector GaussS(Matrix m, Vector v, double& detm);
+    Vector RotationMethod(Matrix m, Vector v);
 
-    static int NumLeftValues(double a, const Matrix& A);// number of eigenvalues A less than a
-    static Vector SearchValues(double& a, double& b, double eps, const Matrix& A);//finding eigenvalues between a and b, like binary search
+    int NumLeftValues(double boundary, const Matrix& m);// number of eigenvalues A less than a
+    Vector SearchValues(double& leftBound, double& rightBound, double eps, const Matrix& m);//finding eigenvalues between a and b, like binary search
 };

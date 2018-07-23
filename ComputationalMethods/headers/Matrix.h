@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Vector.h"
-#include <fstream>
 #include <vector>
 
 class Matrix
@@ -10,8 +9,8 @@ public:
     Matrix();
     Matrix(size_t s);
 	
-    int Size() const;
-    void SwapLine(int i, int j);
+    size_t Size() const;
+    void SwapLine(size_t i, size_t j);
     void Identity();
     Matrix Inverse() const;
     double MaxValue(double eps);
@@ -26,13 +25,13 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
     friend std::istream& operator>>(std::istream& is, Matrix& m);
-    friend Matrix operator*(const Matrix& a, const Matrix& b);
-    friend Vector operator*(const Matrix& a, const Vector& b);
-    friend Matrix operator*(const double x, Matrix& a);
-    friend Matrix operator+(const Matrix& a, const Matrix& b);
-    friend Matrix operator-(const Matrix& a, const Matrix& b);
+    friend Matrix operator*(const Matrix& m1, const Matrix& m2);
+    friend Vector operator*(const Matrix& m, const Vector& v);
+    friend Matrix operator*(const double scalar, Matrix& m);
+    friend Matrix operator+(const Matrix& m1, const Matrix& m2);
+    friend Matrix operator-(const Matrix& m1, const Matrix& m2);
 
 private:
-    std::vector<Vector> matrix = std::vector<Vector>(0);
-    size_t size = 0;
+    std::vector<Vector> matrix;
+    size_t size;
 };

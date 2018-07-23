@@ -8,48 +8,48 @@
 
 int main ()
 {
-    std::ifstream F;
-    F.open("../Data/input.txt");
-    if (!F.is_open())
+    std::ifstream f;
+    f.open("../Data/input.txt");
+    if (!f.is_open())
     {
         std::cout << "File is not exist" << std::endl;
         return -1;
     }
 
-    Matrix A;
-    F>>A;
+    Matrix m;
+    f>>m;
 
-    std::cout << "A =" << std::endl;
-    std::cout << A << std::endl;
+    std::cout << "m =" << std::endl;
+    std::cout << m << std::endl;
 
-    Vector b;
-    F>>b;
-    F.close();
+    Vector v;
+    f>>v;
+    f.close();
 
-    std::cout << "b =" << std::endl;
-    std::cout << b << std::endl;
+    std::cout << "v =" << std::endl;
+    std::cout << v << std::endl;
 
-    double detA = 0.0;
+    double detm = 0.0;
 
-    auto x = Functions::GaussS(A, b, detA);
+    auto result = Functions::GaussS(m, v, detm);
 
-    std::cout << "x =" << std::endl;
-    std::cout << x << std::endl;
+    std::cout << "Result of Gauss method:" << std::endl;
+    std::cout << result << std::endl;
 
-    std::cout << "detA = " << detA << std::endl;
+    std::cout << "det(m) = " << detm << std::endl;
 
-    Matrix Q, R;
+    Matrix orthogonalMatrix, upperTriangular;
     double eps = 1e-6;
-    Functions::QRDecomposition(A, Q, R);
+    Functions::QRDecomposition(m, orthogonalMatrix, upperTriangular);
 
-    std::cout << "Q =" << std::endl;
-    std::cout << Q << std::endl;
+    std::cout << "Orthogonal matrix" << std::endl;
+    std::cout << orthogonalMatrix  << std::endl;
 
-    std::cout << "R =" << std::endl;
-    std::cout << R << std::endl;
+    std::cout << "Upper triangular" << std::endl;
+    std::cout << upperTriangular  << std::endl;
 
     std::cout << "Result of BisectionMethod:" << std::endl;
-    std::cout << Functions::BisectionMethod(A, eps) << std::endl;
+    std::cout << Functions::BisectionMethod(m, eps) << std::endl;
 
     system("pause");
     return 0;

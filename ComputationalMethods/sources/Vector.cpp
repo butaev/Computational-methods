@@ -3,17 +3,17 @@
 #include <cmath>
 #include <cassert>
 
-Vector::Vector() : vector(std::vector<double>(0)) {}
+Vector::Vector() : Vector(0) {}
 
 Vector::Vector(const size_t size) : vector(std::vector<double>(size, 0)) {}
 
-double Vector::operator[](const int i) const
+double Vector::operator[](const size_t i) const
 {
     assert(i >= 0 && i < vector.size());
     return vector[i];
 }
 
-double& Vector::operator[](const int i)
+double& Vector::operator[](const size_t i)
 {
     assert(i >= 0 && i < vector.size());
     return vector[i];
@@ -24,70 +24,70 @@ size_t Vector::Size() const
     return vector.size();
 }
  
-Vector operator+(const Vector a, const Vector b)
+Vector operator+(const Vector v1, const Vector v2)
 {
-    assert(a.Size() == b.Size());
-    Vector c(a.Size());
-    for (size_t i = 0; i < a.Size(); ++i)
+    assert(v1.Size() == v2.Size());
+    Vector resultVector(v1);
+    for (size_t i = 0; i < v1.Size(); ++i)
     {
-        c[i] = a[i] + b[i];
+        resultVector[i] += v2[i];
     }
-return c;
+return resultVector;
 }
 
-void Vector::Swap(const int i, const int j)
+void Vector::Swap(const size_t i, const size_t j)
 {
     std::swap(vector[i], vector[j]);
 }
 
-std::ostream& operator<<(std::ostream& os, const Vector& a)
+std::ostream& operator<<(std::ostream& os, const Vector& v)
 {
-    for(size_t i = 0; i < a.Size(); ++i)
+    for(size_t i = 0; i < v.Size(); ++i)
     {
-        os<<a[i]<<'\n';
+        os << v[i] << std::endl;
     }
     return os;
 }
  
-std::istream& operator>>(std::istream& is, Vector& a)
+std::istream& operator>>(std::istream& is, Vector& v)
 {
     size_t size;
     is>>size;
-    a = Vector(size);
-    for(size_t i = 0; i < a.Size(); ++i)
-        is>>a[i];
+    v = Vector(size);
+    for(size_t i = 0; i < size; ++i)
+        is>>v[i];
     return is;
 }
 
-double operator*(const Vector& a, const Vector& b)
+double operator*(const Vector& v1, const Vector& v2)
 {
-    assert(a.Size() == b.Size());
-    double s = 0.0;
-    for(size_t i = 0; i < a.Size(); ++i)
-        s += a[i] * b[i];
-    return s;
+    assert(v1.Size() == v2.Size());
+    double result = 0.0;
+    for(size_t i = 0; i < v1.Size(); ++i)
+        result += v1[i] * v2[i];
+    return result;
 }
 
-Vector operator-(const Vector& a, const Vector& b)
+Vector operator-(const Vector& v1, const Vector& v2)
 {
-    assert(a.Size() == b.Size());
-    Vector c(a);
-    for(size_t i = 0; i < a.Size(); ++i)
-        c[i] -= b[i];
-    return c;
+    assert(v1.Size() == v2.Size());
+    Vector result(v1);
+    for(size_t i = 0; i < v1.Size(); ++i)
+        result[i] -= v2[i];
+    return result;
 }
 
 double Vector::Norm() const
 {
-    double n = 0.0;
+    double normSquare = 0.0;
     for(size_t i = 0; i < vector.size(); ++i)
-        n += vector[i] * vector[i];
-    return sqrt(n);
+        normSquare += vector[i] * vector[i];
+    return sqrt(normSquare);
 }
 
-Vector operator*(const double a, Vector& b)
+Vector operator*(const double scalar, Vector& v)
 {
-    for(size_t i = 0; i < b.Size(); ++i)
-        b[i] = a * b[i];
-    return b;
+    for(size_t i = 0; i < v.Size(); ++i)
+        v[i] = scalar * v[i];
+    return v;
 }
