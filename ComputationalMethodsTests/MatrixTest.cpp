@@ -129,11 +129,11 @@ TEST_F(MatrixTest, 1Norm)
 
 TEST_F(MatrixTest, ConditionNumber)
 {
-    double ñonditionNumber = b.ConditionNumber();
+    double conditionNumber = b.ConditionNumber();
     double trueMatrixNorm = std::sqrt(b[0][0] * b[0][0] + b[0][1] * b[0][1] + b[1][0] * b[1][0] + b[1][1] * b[1][1]);
     double trueInverseMatrixNorm = std::sqrt(4 + 0.25 + 1 + 2.25);
     double trueConditionNumber = trueMatrixNorm * trueInverseMatrixNorm;
-    EXPECT_LE(std::abs(ñonditionNumber - trueConditionNumber), 1e-6);
+    EXPECT_LE(std::abs(conditionNumber - trueConditionNumber), 1e-6);
 }
 
 TEST_F(MatrixTest, ValuesBounds)
