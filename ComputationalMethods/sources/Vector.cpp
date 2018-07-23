@@ -1,6 +1,7 @@
 #include "Vector.h"
 #include <iostream>
 #include <cmath>
+#include <cassert>
 
 Vector::Vector() : vector(std::vector<double>(0)) {}
 
@@ -8,11 +9,13 @@ Vector::Vector(const size_t size) : vector(std::vector<double>(size, 0)) {}
 
 double Vector::operator[](const int i) const
 {
+    assert(i >= 0 && i < vector.size());
     return vector[i];
 }
 
 double& Vector::operator[](const int i)
 {
+    assert(i >= 0 && i < vector.size());
     return vector[i];
 }
  
@@ -23,6 +26,7 @@ size_t Vector::Size() const
  
 Vector operator+(const Vector a, const Vector b)
 {
+    assert(a.Size() == b.Size());
     Vector c(a.Size());
     for (size_t i = 0; i < a.Size(); ++i)
     {
@@ -57,6 +61,7 @@ std::istream& operator>>(std::istream& is, Vector& a)
 
 double operator*(const Vector& a, const Vector& b)
 {
+    assert(a.Size() == b.Size());
     double s = 0.0;
     for(size_t i = 0; i < a.Size(); ++i)
         s += a[i] * b[i];
@@ -65,6 +70,7 @@ double operator*(const Vector& a, const Vector& b)
 
 Vector operator-(const Vector& a, const Vector& b)
 {
+    assert(a.Size() == b.Size());
     Vector c(a);
     for(size_t i = 0; i < a.Size(); ++i)
         c[i] -= b[i];

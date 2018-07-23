@@ -14,8 +14,7 @@ protected:
         b[1][0] = 3;
         b[1][1] = 4;
     }
-
-    // virtual void TearDown() {}
+    
     Matrix a;
     Matrix b;
 };

@@ -13,7 +13,6 @@ protected:
         b[1] = 2;
     }
 
-    // virtual void TearDown() {}
     Vector a;
     Vector b;
 };

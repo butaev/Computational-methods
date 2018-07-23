@@ -2,6 +2,7 @@
 #include "Functions.h"
 #include <iostream>
 #include <cmath>
+#include <cassert>
 
 int Matrix::Size() const
 {
@@ -45,24 +46,19 @@ std::istream& operator>>(std::istream& is, Matrix& m)
 
 Vector Matrix::operator[](const size_t i) const
 {
-    if (i < 0 || i >= size)
-    {
-        std::cout << "Matrix index out of range" << std::endl;
-    }
+    assert(i >= 0 &&  i < size);
     return matrix[i];
 }
 
 Vector& Matrix::operator[](const size_t i)
 {
-    if (i < 0 || i >= size)
-    {
-        std::cout << "Matrix index out of range" << std::endl;
-    }
+    assert(i >= 0 && i < size);
     return matrix[i];
 }
 
 Matrix operator*(const Matrix& a, const Matrix& b)
 {
+    assert(a.Size() == b.Size());
     Matrix m(a.Size());
     for (int i = 0; i < b.Size(); ++i)
         for (int k = 0; k < b.Size(); ++k)
@@ -73,6 +69,7 @@ Matrix operator*(const Matrix& a, const Matrix& b)
 
 Vector operator*(const Matrix& a, const Vector& b)
 {
+    assert(a.Size() == b.Size());
     Vector v(a.Size());
     for(int i = 0; i < a.Size(); ++i)
         for(int j = 0; j < a.Size(); ++j)
@@ -89,6 +86,7 @@ Matrix operator*(const double x, Matrix& a)
 
 Matrix operator+(const Matrix& a, const Matrix& b)
 {
+    assert(a.Size() == b.Size());
     Matrix c(a.Size());
     for(int i = 0; i < a.Size(); ++i)
         for(int j = 0; j < a.Size(); ++j)
@@ -98,6 +96,7 @@ Matrix operator+(const Matrix& a, const Matrix& b)
 
 Matrix operator-(const Matrix& a, const Matrix& b)
 {
+    assert(a.Size() == b.Size());
     Matrix c(a.Size());
     for(int i = 0; i < a.Size(); ++i)
         for(int j = 0; j < a.Size(); ++j)

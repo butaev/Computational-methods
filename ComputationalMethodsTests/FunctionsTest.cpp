@@ -4,7 +4,7 @@
 class FunctionTest : public ::testing::Test {
 protected:
     virtual void SetUp() {
-        x = Vector(3);
+        x = Vector(2);
         x[0] = 1;
         x[1] = -1;
 
@@ -12,7 +12,6 @@ protected:
         A[0][0] = 1, A[0][1] = 2, A[1][0] = 0, A[1][1] = 2;
     }
 
-    // virtual void TearDown() {}
     Matrix A;
     Vector x;
 };
