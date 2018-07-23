@@ -9,8 +9,6 @@ class Matrix
 public:
     Matrix();
     Matrix(size_t s);
-    Matrix(const Matrix &m);
-    Matrix(Matrix && m);
 	
     int Size() const;
     void SwapLine(int i, int j);
@@ -25,16 +23,14 @@ public:
 
     Vector operator[](const size_t i) const;
     Vector& operator[](const size_t i);
-    Matrix& operator=(const Matrix& m);
-    Matrix& operator=(Matrix && m);
 
     friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
     friend std::istream& operator>>(std::istream& is, Matrix& m);
-	friend Matrix operator*(const Matrix& a, const Matrix& b);
-	friend Vector operator*(const Matrix& a, const Vector& b);
-	friend Matrix operator*(const double x, Matrix& a);
-	friend Matrix operator+(const Matrix& a, const Matrix& b);
-	friend Matrix operator-(const Matrix& a, const Matrix& b);
+    friend Matrix operator*(const Matrix& a, const Matrix& b);
+    friend Vector operator*(const Matrix& a, const Vector& b);
+    friend Matrix operator*(const double x, Matrix& a);
+    friend Matrix operator+(const Matrix& a, const Matrix& b);
+    friend Matrix operator-(const Matrix& a, const Matrix& b);
 
 private:
     std::vector<Vector> matrix = std::vector<Vector>(0);

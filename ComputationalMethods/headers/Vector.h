@@ -8,8 +8,6 @@ class Vector
 public:
     Vector();
     Vector(const size_t size);
-    Vector(const Vector &a);
-    Vector(Vector && v);
 
     void Swap(const int i, const int j);
     size_t Size() const;
@@ -17,8 +15,6 @@ public:
 
     double operator[](const int i) const;
     double& operator[](const int i);
-    Vector& operator=(const Vector& a);
-    Vector& operator=(Vector&& v);
 
     friend std::ostream& operator<<(std::ostream& os, const Vector& a);
     friend std::istream& operator>>(std::istream& is, Vector& a);
@@ -28,5 +24,5 @@ public:
     friend Vector operator-(const Vector& a, const Vector& b);
 
 private:
-    std::vector<double> vector = std::vector<double>(0);
+    std::vector<double> vector;
 };
