@@ -1,118 +1,113 @@
 #include "pch.h"
 #include "Functions.h"
 
+const double eps = 1e-6;
+
 class FunctionTest : public ::testing::Test {
 protected:
     virtual void SetUp() {
-        x = Vector(2);
-        x[0] = 1;
-        x[1] = -1;
+        v = Vector(2);
+        v[0] = 1, v[1] = -1;
 
-        A = Matrix(2);
-        A[0][0] = 1, A[0][1] = 2, A[1][0] = 0, A[1][1] = 2;
+        m = Matrix(2);
+        m[0][0] = 1, m[0][1] = 2, m[1][0] = 0, m[1][1] = 2;
     }
 
-    Matrix A;
-    Vector x;
+    Matrix m;
+    Vector v;
 };
 
 TEST_F(FunctionTest, QRDecomposition)
 {
     Matrix q, r;
-    Functions::QRDecomposition(A, q, r);
+    Functions::QRDecomposition(m, q, r);
 
-    EXPECT_LE(std::abs(q[0][0] - 1), 1e-6);
-    EXPECT_LE(std::abs(q[0][1] - 0), 1e-6);
-    EXPECT_LE(std::abs(q[1][0] - 0), 1e-6);
-    EXPECT_LE(std::abs(q[1][1] - 1), 1e-6);
+    EXPECT_LE(std::abs(q[0][0] - 1), eps);
+    EXPECT_LE(std::abs(q[0][1] - 0), eps);
+    EXPECT_LE(std::abs(q[1][0] - 0), eps);
+    EXPECT_LE(std::abs(q[1][1] - 1), eps);
 
-    EXPECT_LE(std::abs(r[0][0] - 1), 1e-6);
-    EXPECT_LE(std::abs(r[0][1] - 2), 1e-6);
-    EXPECT_LE(std::abs(r[1][0] - 0), 1e-6);
-    EXPECT_LE(std::abs(r[1][1] - 2), 1e-6);
+    EXPECT_LE(std::abs(r[0][0] - 1), eps);
+    EXPECT_LE(std::abs(r[0][1] - 2), eps);
+    EXPECT_LE(std::abs(r[1][0] - 0), eps);
+    EXPECT_LE(std::abs(r[1][1] - 2), eps);
 }
 
 TEST_F(FunctionTest, NumLeftValues) {
-    int numberVal = Functions::NumLeftValues(3, A);
-    EXPECT_LE(std::abs(numberVal - 2), 1e-6);
+    EXPECT_LE(std::abs(Functions::NumLeftValues(3, m) - 2), eps);
 }
 
 TEST_F(FunctionTest, QRAlgorithm) {
-    Vector eigenvalues(A.Size());
-    eigenvalues = Functions::QRAlgorithm(A, 1e-6);
-
-    EXPECT_LE(std::abs(eigenvalues[0] - 1), 1e-6);
-    EXPECT_LE(std::abs(eigenvalues[1] - 2), 1e-6);
+    Vector eigenvalues = Functions::QRAlgorithm(m, eps);
+    EXPECT_LE(std::abs(eigenvalues[0] - 1), eps);
+    EXPECT_LE(std::abs(eigenvalues[1] - 2), eps);
 }
 
 TEST_F(FunctionTest, BisectionMethod) {
-    Vector eigenvalues(A.Size());
-    eigenvalues = Functions::BisectionMethod(A, 1e-6);
-    EXPECT_LE(std::abs(eigenvalues[0] - 1), 1e-6);
-    EXPECT_LE(std::abs(eigenvalues[1] - 2), 1e-6);
+    Vector eigenvalues = Functions::BisectionMethod(m, eps);
+    EXPECT_LE(std::abs(eigenvalues[0] - 1), eps);
+    EXPECT_LE(std::abs(eigenvalues[1] - 2), eps);
 }
 
 TEST_F(FunctionTest, RotationMethod)
 {
-    Vector b = A * x;
-    Vector xx = Functions::RotationMethod(A, b);
-    EXPECT_LE(std::abs(xx[0] - x[0]), 1e-6);
-    EXPECT_LE(std::abs(xx[1] - x[1]), 1e-6);
+    Vector b = m * v;
+    Vector x = Functions::RotationMethod(m, b);
+    EXPECT_LE(std::abs(v[0] - x[0]), eps);
+    EXPECT_LE(std::abs(v[1] - x[1]), eps);
 }
 
 TEST_F(FunctionTest, GMRES)
 {
-    Vector b = A * x;
+    Vector b = m * v;
     int numIter = 0;
-    Vector xx = Functions::GMRES(A, b, 1e-6, numIter);
-    std::cout << "Number of iteration: " << numIter << std::endl;
-    EXPECT_LE(std::abs(xx[0] - x[0]), 1e-6);
-    EXPECT_LE(std::abs(xx[1] - x[1]), 1e-6);
+    Vector x = Functions::GMRES(m, b, eps, numIter);
+    EXPECT_LE(std::abs(x[0] - v[0]), eps);
+    EXPECT_LE(std::abs(x[1] - v[1]), eps);
 }
 
 TEST_F(FunctionTest, SimpleIteration)
 {
-    Vector b = A * x;
+    Vector b = m * v;
     int numIter = 0;
-    Vector xx = Functions::SimpleIteration(A, b, 1e-6, numIter);
-    std::cout << "Number of iteration: " << numIter << std::endl;
-    EXPECT_LE(std::abs(xx[0] - x[0]), 1e-6);
-    EXPECT_LE(std::abs(xx[1] - x[1]), 1e-6);
+    Vector x = Functions::SimpleIteration(m, b, eps, numIter);
+    EXPECT_LE(std::abs(v[0] - x[0]), eps);
+    EXPECT_LE(std::abs(v[1] - x[1]), eps);
 }
 
 TEST_F(FunctionTest, TridiagMatrix)
 {
-    Vector b = A * x;
-    Vector xx = Functions::TridiagMatrix(A, b);
-    EXPECT_LE(std::abs(xx[0] - x[0]), 1e-6);
-    EXPECT_LE(std::abs(xx[1] - x[1]), 1e-6);
+    Vector b = m * v;
+    Vector x = Functions::TridiagMatrix(m, b);
+    EXPECT_LE(std::abs(v[0] - x[0]), eps);
+    EXPECT_LE(std::abs(v[1] - x[1]), eps);
 }
 
 TEST_F(FunctionTest, Gauss)
 {
-    Vector b = A * x;
-    double detA = 0;
-    Vector xx = Functions::Gauss(A, b, detA);
-    EXPECT_LE(std::abs(xx[0] - x[0]), 1e-6);
-    EXPECT_LE(std::abs(xx[1] - x[1]), 1e-6);
-    EXPECT_LE(std::abs(detA - 2), 1e-6);
+    Vector b = m * v;
+    double detm = 0;
+    Vector x = Functions::Gauss(m, b, detm);
+    EXPECT_LE(std::abs(v[0] - x[0]), eps);
+    EXPECT_LE(std::abs(v[1] - x[1]), eps);
+    EXPECT_LE(std::abs(detm - 2), eps);
 }
 
 TEST_F(FunctionTest, GaussS)
 {
-    Vector b = A * x;
-    double detA = 0;
-    Vector xx = Functions::GaussS(A, b, detA);
-    EXPECT_LE(std::abs(xx[0] - x[0]), 1e-6);
-    EXPECT_LE(std::abs(xx[1] - x[1]), 1e-6);
-    EXPECT_LE(std::abs(detA - 2), 1e-6);
+    Vector b = m * v;
+    double detm = 0;
+    Vector x = Functions::GaussS(m, b, detm);
+    EXPECT_LE(std::abs(v[0] - x[0]), eps);
+    EXPECT_LE(std::abs(v[1] - x[1]), eps);
+    EXPECT_LE(std::abs(detm - 2), eps);
 }
 
 TEST_F(FunctionTest, SearchValues)
 {
-    double a = 0.5;
-    double b = 1.5;
-    Vector values = Functions::SearchValues(a, b, 1e-6, A);
-    EXPECT_LE(std::abs((int)values.Size() - 1), 1e-6);
-    EXPECT_LE(std::abs(values[values.Size() - 1] - 1), 1e-6);
+    double leftBound = 0.5;
+    double rightBound = 1.5;
+    Vector values = Functions::SearchValues(leftBound, rightBound, eps, m);
+    EXPECT_EQ(values.Size(), 1);
+    EXPECT_LE(std::abs(values[values.Size() - 1] - 1), eps);
 }
