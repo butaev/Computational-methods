@@ -23,8 +23,21 @@ int main ()
     std::cout << A << std::endl;
 
     Vector b;
-    //F>>b;
+    F>>b;
     F.close();
+
+    std::cout << "b =" << std::endl;
+    std::cout << b << std::endl;
+
+    double detA = 0.0;
+
+    auto x = Functions::GaussS(A, b, detA);
+
+    std::cout << "x =" << std::endl;
+    std::cout << x << std::endl;
+
+    std::cout << "detA = " << detA << std::endl;
+
     Matrix Q, R;
     double eps = 1e-6;
     Functions::QRDecomposition(A, Q, R);
