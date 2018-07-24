@@ -1,7 +1,6 @@
 #include "Matrix.h"
 #include "Functions.h"
 #include <iostream>
-#include <cmath>
 #include <cassert>
 
 size_t Matrix::Size() const
@@ -18,6 +17,8 @@ Matrix::Matrix(size_t s)
     for(size_t i = 0; i < s; ++i)
         matrix[i] = Vector(s);
 }
+
+Matrix::Matrix(std::initializer_list<Vector> list) : size(list.size()), matrix(std::vector<Vector>(list)) {}
 
 std::ostream& operator<<(std::ostream& os, const Matrix& m)
 {

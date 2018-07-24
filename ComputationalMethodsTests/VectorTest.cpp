@@ -6,13 +6,8 @@ const double eps = 1e-6;
 class VectorTest : public ::testing::Test {
 protected:
     virtual void SetUp() {
-        a = Vector(2);
-        a[0] = 1;
-        a[1] = -1;
-
-        b = Vector(2);
-        b[0] = 1;
-        b[1] = 2;
+        a = { 1, -1 };
+        b = {1, 2};
     }
 
     Vector a;

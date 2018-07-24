@@ -8,7 +8,8 @@ class Matrix
 public:
     Matrix();
     Matrix(size_t s);
-	
+    Matrix(std::initializer_list<Vector> list);
+
     size_t Size() const;
     void SwapLine(size_t i, size_t j);
     void Identity();

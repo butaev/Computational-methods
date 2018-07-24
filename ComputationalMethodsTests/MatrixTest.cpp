@@ -6,15 +6,8 @@ const double eps = 1e-6;
 class MatrixTest : public ::testing::Test {
 protected:
     virtual void SetUp() {
-        a = Matrix(2);
-        a[0][0] = 1;
-        a[1][1] = -1;
-
-        b = Matrix(2);
-        b[0][0] = 1;
-        b[0][1] = 2;
-        b[1][0] = 3;
-        b[1][1] = 4;
+        a = { {1, 0}, {0, -1} };
+        b = { {1, 2}, {3, 4} };
     }
     
     Matrix a;
@@ -47,9 +40,7 @@ TEST_F(MatrixTest, DotProduct) {
 
 TEST_F(MatrixTest, MatrixVectorProduct)
 {
-    Vector v(2);
-    v[0] = 1;
-    v[1] = -1;
+    Vector v = { 1, -1 };
     Vector dotProduct = a * v;
     EXPECT_LE(std::abs(dotProduct[0] - 1), eps);
     EXPECT_LE(std::abs(dotProduct[1] - 1), eps);
@@ -93,21 +84,13 @@ TEST_F(MatrixTest, Inverse)
 
 TEST_F(MatrixTest, MaxValueSymmetricPositiveMatrix)
 {
-    Matrix m(2);
-    m[0][0] = 3;
-    m[0][1] = 0;
-    m[1][0] = 0;
-    m[1][1] = 5;
+    Matrix m = { {3, 0}, {0, 5} };
     EXPECT_LE(std::abs(m.MaxValue(eps) - 5), eps);
 }
 
 TEST_F(MatrixTest, MinValueSymmetricPositiveMatrix)
 {
-    Matrix m(2);
-    m[0][0] = 3;
-    m[0][1] = 0;
-    m[1][0] = 0;
-    m[1][1] = 5;
+    Matrix m = { { 3, 0 },{ 0, 5 } };
     EXPECT_LE(std::abs(m.MinValue(eps) - 3), eps);
 }
 
@@ -134,10 +117,8 @@ TEST_F(MatrixTest, ConditionNumber)
 
 TEST_F(MatrixTest, ValuesBounds)
 {
-    Matrix m(2);
-    m[0][0] = 2, m[0][1] = -1, m[1][0] = -1, m[1][1] = 2;
-    Vector valuesBounds(2);
-    valuesBounds = m.ValuesBounds();
+    Matrix m = { {2, -1}, {-1, 2} };
+    Vector valuesBounds = m.ValuesBounds();
 
     EXPECT_LE(std::abs(valuesBounds[0] - 1), eps);
     EXPECT_LE(std::abs(valuesBounds[1] - 3), eps);

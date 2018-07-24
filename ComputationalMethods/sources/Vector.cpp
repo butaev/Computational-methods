@@ -1,11 +1,12 @@
 #include "Vector.h"
 #include <iostream>
-#include <cmath>
 #include <cassert>
 
 Vector::Vector() : Vector(0) {}
 
 Vector::Vector(const size_t size) : vector(std::vector<double>(size, 0)) {}
+
+Vector::Vector(std::initializer_list<double> list) : vector(std::vector<double>(list)) {}
 
 double Vector::operator[](const size_t i) const
 {

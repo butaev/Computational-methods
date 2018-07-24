@@ -7,6 +7,7 @@ class Vector
 public:
     Vector();
     Vector(const size_t size);
+    Vector(std::initializer_list<double> list);
 
     void Swap(const size_t i, const size_t j);
     size_t Size() const;

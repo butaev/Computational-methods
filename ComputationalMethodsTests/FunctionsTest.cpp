@@ -6,11 +6,8 @@ const double eps = 1e-6;
 class FunctionTest : public ::testing::Test {
 protected:
     virtual void SetUp() {
-        v = Vector(2);
-        v[0] = 1, v[1] = -1;
-
-        m = Matrix(2);
-        m[0][0] = 1, m[0][1] = 2, m[1][0] = 0, m[1][1] = 2;
+        v = { 1, -1 };
+        m = { {1, 2}, {0, 2} };
     }
 
     Matrix m;
