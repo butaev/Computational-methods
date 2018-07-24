@@ -2,7 +2,6 @@
 #include "Vector.h"
 #include "Matrix.h"
 #include <iostream>
-#include <cmath>
 
 void Functions::QRDecomposition(Matrix m, Matrix& q, Matrix& r)
 {
@@ -120,21 +119,21 @@ Vector Functions::GaussS(Matrix m, Vector v, double& detm)
     for(size_t i = 0; i < m.Size(); ++i)
     {
         coef2 = m[i][i];
-        int j;
-        for(int l = 0; l < size; ++l)
+        size_t swapInd;
+        for(int j = 0; j < size; ++j)
         {
-            if(m[l][i] > coef2)
+            if(m[j][i] > coef2)
             {
-                coef2 = m[l][i];
-                j = l;
+                coef2 = m[j][i];
+                swapInd = j;
             }
             else
-                j = i;
+                swapInd = i;
         }
-        if(i != j)
+        if(i != swapInd)
         {
-            m.SwapLine(i,j);
-            v.Swap(i,j);
+            m.SwapLine(i, swapInd);
+            v.Swap(i, swapInd);
             detm *= -1;
         }
         if(m[i][i] != 0 && detm != 0.0)
@@ -147,8 +146,8 @@ Vector Functions::GaussS(Matrix m, Vector v, double& detm)
 
         coef1 = m[i][i];
         v[i] /= m[i][i];
-        for(int k = i; k < size; ++k)
-            m[i][k] = m[i][k] / coef1;
+        for(int j = i; j < size; ++j)
+            m[i][j] = m[i][j] / coef1;
 
         for(int j = i + 1; j < size; ++j)
         {    
@@ -178,15 +177,15 @@ Vector Functions::RotationMethod(Matrix m, Vector v)
 
     for(size_t i = 0; i < m.Size(); ++i)
     {
-        int k = i;
+        size_t swapInd = i;
         if (m[i][i] == 0)
         {
-            for(size_t l = i + 1; l < m.Size(); ++l)
+            for(size_t j = i + 1; j < m.Size(); ++j)
             {
-                if(m[l][i] > 0)
-                    k = l;
+                if(m[j][i] > 0)
+                    swapInd = j;
                 else
-                    if(l == m.Size() - 1)
+                    if(j == m.Size() - 1)
                     {
                         Vector resultVector(m.Size());
                         return resultVector;
@@ -194,10 +193,10 @@ Vector Functions::RotationMethod(Matrix m, Vector v)
             }
         }
 
-        if(i != k)
+        if(i != swapInd)
         {
-            m.SwapLine(i, k);
-            v.Swap(i, k);
+            m.SwapLine(i, swapInd);
+            v.Swap(i, swapInd);
         }
 
         for(size_t j = i + 1; j < m.Size(); ++j)
