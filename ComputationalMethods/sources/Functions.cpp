@@ -264,7 +264,7 @@ Vector Functions::TridiagMatrix(Matrix m, Vector f)
 Vector Functions::QRAlgorithm(Matrix m, double eps)
 {
     size_t size = m.Size();
-    Matrix orthogonalMatrix, upperTriangular; //upperTriangular
+    Matrix orthogonalMatrix, upperTriangular;
     Matrix transformationMatrix = m;
     Vector resultVector(size);
 
@@ -374,8 +374,7 @@ Vector Functions::BisectionMethod(Matrix m, double eps)
         m = matrix2 * m * matrix2;
     }
 
-    Vector bounds(2);
-    bounds = m.ValuesBounds();
+    Vector bounds = m.ValuesBounds();
 
     return Functions::SearchValues(bounds[0], bounds[1], eps, m);
 }

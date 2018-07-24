@@ -162,12 +162,11 @@ double Matrix::MaxValue(double eps)
 
 double Matrix::MinValue(double eps)
 {
-    Matrix matrix1 = *this;
-    Matrix identityMatrix(matrix1.Size());
+    Matrix identityMatrix(size);
     identityMatrix.Identity();
-    Matrix matrix2 = matrix1.MaxValue(eps) * identityMatrix - matrix1;
+    Matrix matrix2 = this->MaxValue(eps) * identityMatrix - *this;
 
-    return abs(matrix2.MaxValue(eps) - matrix1.MaxValue(eps));
+    return abs(matrix2.MaxValue(eps) - this->MaxValue(eps));
 }
 
 double Matrix::Norm()
@@ -198,15 +197,14 @@ double Matrix::Norm1()
 
 Vector Matrix::ValuesBounds() const
 {
-    Matrix cpyThis = *this;
     Vector resultVector(2), vector1(size), vector2(size + 1);
-    vector1[0] = cpyThis[0][0];
+    vector1[0] = matrix[0][0];
 
-    for(size_t i = 0; i < cpyThis.Size(); ++i)
+    for(size_t i = 0; i < size; ++i)
     {
-        vector1[i] = cpyThis[i][i];
-        if(i < cpyThis.Size() - 1)
-            vector2[i + 1] = -cpyThis[i][i +1];
+        vector1[i] = matrix[i][i];
+        if(i < size - 1)
+            vector2[i + 1] = -matrix[i][i +1];
     }
     double min1, min2, max1, max2;
     min1 = (vector1[0] - abs(vector2[1]) < vector1[size -1] - abs(vector2[size - 1])
